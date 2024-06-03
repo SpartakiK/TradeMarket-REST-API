@@ -81,6 +81,13 @@ namespace WebApi.Controllers
             }
         }
 
+        [HttpPut("categories/{id}")]
+        public async Task<ActionResult> UpdateCategory(int id, [FromBody] ProductCategoryModel model)
+        {
+            await _productService.UpdateCategoryAsync(model);
+            return Ok(model);
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteProduct(int id)
         {
@@ -109,12 +116,6 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpPut("categories/{id}")]
-        public async Task<ActionResult> UpdateProduct(int id, [FromBody] ProductCategoryModel model)
-        {
-            await _productService.UpdateCategoryAsync(model);
-            return Ok(model);
-        }
         [HttpDelete("categories/{id}")]
         public async Task<ActionResult> DeleteProductCategory(int id)
         {
