@@ -26,14 +26,12 @@ namespace Data.Repositories
         public void Delete(TEntity entity)
         {
              _tradeMarketDbContext.Set<TEntity>().Remove(entity);
-             _tradeMarketDbContext.SaveChanges();
         }
 
         public async Task DeleteByIdAsync(int id)
         {
             var entity = await GetByIdAsync(id);
             _tradeMarketDbContext.Set<TEntity>().Remove(entity);
-            await _tradeMarketDbContext.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
@@ -55,7 +53,6 @@ namespace Data.Repositories
         public void Update(TEntity entity)
         {
             _tradeMarketDbContext.Set<TEntity>().Update(entity);
-            _tradeMarketDbContext.SaveChanges();
         }
     }
 }

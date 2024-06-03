@@ -36,10 +36,12 @@ namespace Data.Data
 
             modelBuilder.Entity<Product>()
                 .HasKey(x => x.Id);
+
             modelBuilder.Entity<Product>()
-                  .HasOne(d => d.Category)
-                  .WithMany(p => p.Products)
-                  .HasForeignKey(d => d.ProductCategoryId);
+                .HasOne(p => p.Category)
+                .WithMany(c => c.Products)
+                .HasForeignKey(p => p.ProductCategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ProductCategory>()
                 .HasKey(x => x.Id);
@@ -49,10 +51,13 @@ namespace Data.Data
             modelBuilder.Entity<Receipt>()
                 .HasOne(x => x.Customer)
                 .WithMany(x => x.Receipts)
-                .HasForeignKey(x =>x.CustomerId);
+                .HasForeignKey(x => x.CustomerId);
 
             modelBuilder.Entity<ReceiptDetail>()
-                .HasKey(x => x.Id);
+            .HasKey(rd => new { rd.ReceiptId, rd.ProductId });
+
+            modelBuilder.Entity<ReceiptDetail>()
+                .HasAlternateKey(rd => new { rd.ReceiptId, rd.ProductId });
             modelBuilder.Entity<ReceiptDetail>()
                 .HasOne(x => x.Product)
                 .WithMany(x => x.ReceiptDetails)

@@ -39,7 +39,7 @@ namespace Business.Services
 
         public async Task AddProductAsync(int productId, int receiptId, int quantity)
         {
-            var receipt = await _receiptRepository.GetByIdWithDetailsAsync(productId);
+            var receipt = await _receiptRepository.GetByIdWithDetailsAsync(receiptId);
             if (receipt == null)
             {
                 throw new MarketException("Reciept Does Not Exist!");
@@ -103,12 +103,14 @@ namespace Business.Services
         public async Task DeleteAsync(int modelId)
         {
             var receipt = await _receiptRepository.GetByIdWithDetailsAsync(modelId);
-            await _receiptRepository.DeleteByIdAsync(modelId);
+            var receiptdetails = (await _receiptDetailRepository.GetAllWithDetailsAsync());
             foreach (var item in receipt.ReceiptDetails)
             {
                 _receiptDetailRepository.Delete(item);
             }
 
+            _receiptRepository.Delete(receipt);
+            await _receiptRepository.DeleteByIdAsync(modelId);
             await _unitOfWork.SaveAsync();
         }
 

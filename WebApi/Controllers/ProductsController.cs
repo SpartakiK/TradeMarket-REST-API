@@ -3,6 +3,7 @@ using Business.Models;
 using Business.Services;
 using Business.Validation;
 using Data.Exceptions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,8 +23,18 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductModel>>> GetAllProducts()
+        public async Task<ActionResult<IEnumerable<ProductModel>>> GetByFilter([FromQuery]int? categoryId, [FromQuery]int? minPrice, [FromQuery] int? maxPrice)
         {
+            if (categoryId != 00 || minPrice != 0 || maxPrice != 0)
+            {
+                var filter = new FilterSearchModel();
+                filter.CategoryId = categoryId;
+                filter.MinPrice = minPrice;
+                filter.MaxPrice = maxPrice;
+                var filteredProducts = await _productService.GetByFilterAsync(filter);
+                return Ok(filteredProducts);
+            }
+
             var products = await _productService.GetAllAsync();
             return Ok(products);
         }

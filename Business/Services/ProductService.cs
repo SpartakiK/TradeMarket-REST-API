@@ -32,6 +32,10 @@ namespace Business.Services
         {
             ValidateProductModel(model);
             var product = _mapper.Map<Product>(model);
+
+            product.Category = null;
+            product.ProductCategoryId = model.ProductCategoryId;
+
             await _productRepository.AddAsync(product);
             await _unitOfWork.SaveAsync();
         }

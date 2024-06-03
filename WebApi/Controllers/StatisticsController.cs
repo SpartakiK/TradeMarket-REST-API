@@ -1,5 +1,7 @@
-﻿using Business.Models;
+﻿using Business.Interfaces;
+using Business.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,22 +12,38 @@ namespace WebApi.Controllers
     [ApiController]
     public class StatisticsController : ControllerBase
     {
-        [HttpGet("customers/{id}")]
-        public async Task<ActionResult<IEnumerable<ProductModel>>> GetCustomersMostPopularProducts(int customerId)
+        private readonly IStatisticService _statisticService;
+        public StatisticsController(IStatisticService statisticService) 
         {
-            return Ok();
+            _statisticService = statisticService;
         }
 
-        [HttpGet("categories/{id}")]
-        public async Task<ActionResult<decimal>> GetIncomeOfCategoryInPeriod(int categoryId) 
+        [HttpGet("popularProducts")]
+        public async Task<ActionResult<IEnumerable<ProductModel>>> GetMostPopularProductsAsync([FromQuery] int productCount)
         {
-            return Ok();
+            var products = await _statisticService.GetMostPopularProductsAsync(productCount);
+            return Ok(products);
         }
 
-        [HttpGet("{count}")]
-        public async Task<ActionResult<IEnumerable<ProductModel>>> GetMostPopularProductsAsync(int productCount)
+        [HttpGet("customer/{id}/{productCount}")]
+        public async Task<ActionResult<IEnumerable<ProductModel>>> GetCustomersMostPopularProducts(int id, int productCount)
         {
-            return Ok();
+            var products = await _statisticService.GetCustomersMostPopularProductsAsync(productCount, id);
+            return Ok(products);
+        }
+
+        [HttpGet("activity/{customerCount}")]
+        public async Task<ActionResult<IEnumerable<CustomerModel>>> GetMostActiveCustomers(int customerCount, [FromQuery] DateTime startDate, [FromQuery] DateTime endDate)
+        {
+            var customers = await _statisticService.GetMostValuableCustomersAsync(customerCount, startDate, endDate);
+            return Ok(customers);
+        }
+
+        [HttpGet("income/{categoryId}")]
+        public async Task<ActionResult<decimal>> GetIncomeOfCategoryInPeriod(int categoryId, [FromQuery] DateTime startDate, [FromQuery] DateTime endDate) 
+        {
+           var income = await _statisticService.GetIncomeOfCategoryInPeriod(categoryId, startDate, endDate);
+           return Ok(income);
         }
 
 
