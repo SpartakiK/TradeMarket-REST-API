@@ -34,7 +34,6 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //ToDo
             services.AddControllers();
             services.AddSwaggerGen();
             services.AddAutoMapper(typeof(AutomapperProfile));
@@ -51,7 +50,6 @@ namespace WebApi
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IReceiptService, ReceiptService>();
             services.AddScoped<IStatisticService, StatisticService>();
-            //ToDo
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,8 +61,6 @@ namespace WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
-            //ToDo
 
             app.UseHttpsRedirection();
 

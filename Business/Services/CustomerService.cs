@@ -21,14 +21,12 @@ namespace Business.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ICustomerRepository _customerRepository;
-        private readonly IPersonRepository _personRepository;
 
         public CustomerService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _customerRepository = _unitOfWork.CustomerRepository;
-            _personRepository = _unitOfWork.PersonRepository;
         }
 
         public async Task AddAsync(CustomerModel model)

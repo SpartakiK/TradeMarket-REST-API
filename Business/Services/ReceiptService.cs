@@ -103,7 +103,6 @@ namespace Business.Services
         public async Task DeleteAsync(int modelId)
         {
             var receipt = await _receiptRepository.GetByIdWithDetailsAsync(modelId);
-            var receiptdetails = (await _receiptDetailRepository.GetAllWithDetailsAsync());
             foreach (var item in receipt.ReceiptDetails)
             {
                 _receiptDetailRepository.Delete(item);

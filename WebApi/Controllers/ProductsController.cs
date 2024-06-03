@@ -68,7 +68,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateProduct(int id, [FromBody] ProductModel model)
+        public async Task<ActionResult> UpdateProduct([FromBody] ProductModel model)
         {
             try
             {
