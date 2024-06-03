@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.OpenApi.Models;
+using Data.Repositories;
 
 namespace WebApi
 {
@@ -34,9 +35,22 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             //ToDo
-
             services.AddControllers();
+            services.AddSwaggerGen();
+            services.AddAutoMapper(typeof(AutomapperProfile));
 
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IPersonRepository, PersonRepository>();
+            services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IReceiptDetailRepository, ReceiptDetailRepository>();
+            services.AddScoped<IReceiptRepository, ReceiptRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IReceiptService, ReceiptService>();
+            services.AddScoped<IStatisticService, StatisticService>();
             //ToDo
         }
 
@@ -46,6 +60,8 @@ namespace WebApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
 
             //ToDo
