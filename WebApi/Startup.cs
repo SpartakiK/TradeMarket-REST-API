@@ -38,6 +38,7 @@ namespace WebApi
             services.AddSwaggerGen();
             services.AddAutoMapper(typeof(AutomapperProfile));
 
+            services.AddDbContext<TradeMarketDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnectionStrings")));
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
@@ -59,7 +60,11 @@ namespace WebApi
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                    options.RoutePrefix = string.Empty;
+                });
             }
 
             app.UseHttpsRedirection();
